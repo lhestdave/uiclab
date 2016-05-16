@@ -138,7 +138,7 @@ $status = $_SESSION['ustatus'];
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h4 class="page-head-line">Dashboard</h4>
+                    <h4 class="page-head-line">Welcome! <a href='#'><?php echo $uname; ?></a></h4>
 
                 </div>
 
