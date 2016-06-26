@@ -9,6 +9,13 @@ $uname = $_SESSION['uname'];
 $status = $_SESSION['ustatus'];
 }
 
+$sqlquery="SELECT * FROM tbl_active WHERE aid=1";
+$rsq=mysql_query($sqlquery); 
+while($rowq = mysql_fetch_object($rsq)) { 
+    $_SESSION["acadyear"]=$rowq->acadyear;
+    $_SESSION["semester"]=$rowq->semester;
+}
+
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -223,8 +230,6 @@ $status = $_SESSION['ustatus'];
                                     <tbody>
             <?php 
 			include_once "connect.php";
-            //$sql = "SELECT r.rid,r.dateTime,e.coursecode,e.expno,e.exptitle,e.labcode,r.rdate,r.expid,r.status ".
-              //                  "FROM tbl_requests as r INNER JOIN tbl_experiment as e ON r.expid=e.eid INNER JOIN tbl_users as u ON r.requestedby = u.uid WHERE r.requestedby=".$uid." ORDER BY r.rdate";
             $sql="SELECT * FROM tbl_users";
             $rs=mysql_query($sql); 
             $ctr = 1;
@@ -275,51 +280,94 @@ $status = $_SESSION['ustatus'];
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">Add Request</h4>
             </div>
-            <div class="modal-body">
-                <form role="form" name="addrequest" method="POST" action="#" >
-                    <div class="form-group">
-                        <!--<input type="text" class="form-control" id="searchstr" name="searchstr" placeholder="Search: Experiment Title">						
-						-->
-                        <br>
-                        <div class="table-responsive">
-                        <table class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Exp. Code</th>
-                                    <th>Lab Experiment No. & Title</th>
-                                    <th>Subject</th>
-                                    <th>LabCode</th>
-                                    <th>Date to Perform</th>
-                                    <th >Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-            <?php 
-			include_once "connect.php";
-            $sql = "SELECT * FROM tbl_courses";
+            <div class="modal-body">                              
+
+
             
-             $rs1=mysql_query($sql); 
-            while($row1 = mysql_fetch_object($rs1)) { 
-	
-						echo "<tr>";
-						echo "<td align='left'>#"."</td>";
-                        echo "<td align='left'></td>";
-                        echo "<td align='left'>"."</td>";
-                        echo "<td align='left'>"."</td>";
-                        echo "<td align='left'><input type='datetime-local' id='dateperform_"."' name='dateperform_"."'/></td>";
-                        echo "<td align='left'><input type='button' class='btn btn-xs btn-info' onclick='addrequestToDb(".");' value='Add to Request'/></td>";
-						echo "</tr>";
-					}
-				?>
-                            </tbody>
-                            </table>
-                    </div>
-           
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                       <!-- <button type="submit" class="btn btn-primary">Submit Request</button>-->
-                    </div>
-			    </form>				
+            <div class="panel-body">
+                <div class="panel-group" id="accordion">
+ 
+                <?php 
+                include_once "connect.php";
+
+
+                $date1 = str_replace('-', '/', date('m-d-Y'));
+                $tomorrow = date('Y-m-d',strtotime($date1 . "+1 days"));
+                
+                //echo $tomorrow;
+
+                $sql1="SELECT DISTINCT(code.coursecode),cc.coursedesc,code.days AS days FROM courseexperiment as code INNER JOIN tbl_courses as cc ON cc.coursecode=code.coursecode ".
+                            "WHERE code.uid=".$uid." AND code.acadyear='".$_SESSION['acadyear']."' AND code.semester='".$_SESSION['semester']."'";
+                
+                $rs1=mysql_query($sql1); 
+                $ctr = 1;
+                while($row1 = mysql_fetch_object($rs1)) { 
+                ?>                                            
+                                 <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $ctr;?>" class="collapsed"><?php echo $row1->coursecode." - ".$row1->coursedesc." (".$row1->days.")";?></a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse<?php echo $ctr; $ctr++;?>" class="panel-collapse collapse" style="height: 0px;">
+                                    <div class="panel-body">
+                                            
+                                            
+                                            <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Exp.No.</th>
+                                                        <th>Exp. Title</th>
+                                                        <th>Date</th>
+                                                        <th align="center">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                            
+                                            <?php 
+                                            include_once "connect.php";
+
+                                            $sqlc="SELECT eid,expno,exptitle,days,time FROM courseexperiment WHERE coursecode='".$row1->coursecode."' AND uid=".$uid.
+                                                        " ORDER BY expno ASC";
+                                            $rsc=mysql_query($sqlc); 
+                                            while($rowc = mysql_fetch_object($rsc)) { 
+                                                echo "<tr>";
+                                                echo "<td align='left'>".$rowc->expno."</td>";
+                                                echo "<td align='left'>".$rowc->exptitle."</td>";
+                                                echo "<td align='left'><input type='date' min='".$tomorrow."' /></td>";
+                                                echo "<td align='left'>"."</td>";
+                                                echo "</tr>";
+                                            }
+                                            ?> 
+                                            
+                                            </tbody>
+                                            </table>
+                                            
+                                            </div>
+                                     </div>
+                                    </div>
+                                </div>
+                <?php
+                }
+                ?> 
+
+                                
+                  </div>
+                </div>
+                                                       
+                                    
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+			
             </div>
         </div>
     </div>
