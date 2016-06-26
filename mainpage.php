@@ -223,18 +223,20 @@ $status = $_SESSION['ustatus'];
                                     <tbody>
             <?php 
 			include_once "connect.php";
-            $sql = "SELECT r.rid,r.dateTime,e.coursecode,e.expno,e.exptitle,e.labcode,r.rdate,r.expid,r.status ".
-                                "FROM tbl_requests as r INNER JOIN tbl_experiment as e ON r.expid=e.eid INNER JOIN tbl_users as u ON r.requestedby = u.uid WHERE r.requestedby=".$uid." ORDER BY r.rdate";
+            //$sql = "SELECT r.rid,r.dateTime,e.coursecode,e.expno,e.exptitle,e.labcode,r.rdate,r.expid,r.status ".
+              //                  "FROM tbl_requests as r INNER JOIN tbl_experiment as e ON r.expid=e.eid INNER JOIN tbl_users as u ON r.requestedby = u.uid WHERE r.requestedby=".$uid." ORDER BY r.rdate";
+            $sql="SELECT * FROM tbl_users";
             $rs=mysql_query($sql); 
+            $ctr = 1;
             while($row = mysql_fetch_object($rs)) { 
 	
 						echo "<tr>";
-						echo "<td align='left'>#".$row->rid."</td>";
-						echo "<td align='left'>".$row->dateTime."</td>";
-                        echo "<td align='left'>ExpNo.".$row->expno." - ".$row->exptitle."</td>";
-                        echo "<td align='left'>".$row->coursecode."</td>";
-                        echo "<td align='left'>".$row->labcode."</td>";
-                        echo "<td align='left'>".$row->rdate."</td>";
+						echo "<td align='left'>#".$ctr++."</td>";
+						echo "<td align='left'>"."</td>";
+                        echo "<td align='left'>"."</td>";
+                        echo "<td align='left'>"."</td>";
+                        echo "<td align='left'>"."</td>";
+                        echo "<td align='left'>"."</td>";
                         $st = "";
                         if($row->status == 0)
                             $st = "<a href='#'  class='btn btn-xs btn-info'  >Requested";
@@ -276,8 +278,9 @@ $status = $_SESSION['ustatus'];
             <div class="modal-body">
                 <form role="form" name="addrequest" method="POST" action="#" >
                     <div class="form-group">
-                        <input type="text" class="form-control" id="searchstr" name="searchstr" placeholder="Search: Experiment Title">						
-						<br>
+                        <!--<input type="text" class="form-control" id="searchstr" name="searchstr" placeholder="Search: Experiment Title">						
+						-->
+                        <br>
                         <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
@@ -293,18 +296,18 @@ $status = $_SESSION['ustatus'];
                             <tbody>
             <?php 
 			include_once "connect.php";
-            $sql = "SELECT * FROM tbl_experiment";
+            $sql = "SELECT * FROM tbl_courses";
             
              $rs1=mysql_query($sql); 
             while($row1 = mysql_fetch_object($rs1)) { 
 	
 						echo "<tr>";
-						echo "<td align='left'>#".$row1->eid."</td>";
-                        echo "<td align='left'>ExpNo.".$row1->expno." - ".$row1->exptitle."</td>";
-                        echo "<td align='left'>".$row1->coursecode."</td>";
-                        echo "<td align='left'>".$row1->labcode."</td>";
-                        echo "<td align='left'><input type='datetime-local' id='dateperform_".$row1->eid."' name='dateperform_".$row1->eid."'/></td>";
-                        echo "<td align='left'><input type='button' class='btn btn-xs btn-info' onclick='addrequestToDb(".$row1->eid.");' value='Add to Request'/></td>";
+						echo "<td align='left'>#"."</td>";
+                        echo "<td align='left'></td>";
+                        echo "<td align='left'>"."</td>";
+                        echo "<td align='left'>"."</td>";
+                        echo "<td align='left'><input type='datetime-local' id='dateperform_"."' name='dateperform_"."'/></td>";
+                        echo "<td align='left'><input type='button' class='btn btn-xs btn-info' onclick='addrequestToDb(".");' value='Add to Request'/></td>";
 						echo "</tr>";
 					}
 				?>
