@@ -298,7 +298,7 @@ while($rowq = mysql_fetch_object($rsq)) {
 
                 $sql1="SELECT DISTINCT(code.coursecode),cc.coursedesc,code.days AS days FROM courseexperiment as code INNER JOIN tbl_courses as cc ON cc.coursecode=code.coursecode ".
                             "WHERE code.uid=".$uid." AND code.acadyear='".$_SESSION['acadyear']."' AND code.semester='".$_SESSION['semester']."'";
-                
+                //echo $sql1;
                 $rs1=mysql_query($sql1); 
                 $ctr = 1;
                 while($row1 = mysql_fetch_object($rs1)) { 
@@ -335,8 +335,12 @@ while($rowq = mysql_fetch_object($rsq)) {
                                                 echo "<tr>";
                                                 echo "<td align='left'>".$rowc->expno."</td>";
                                                 echo "<td align='left'>".$rowc->exptitle."</td>";
-                                                echo "<td align='left'><input type='date' min='".$tomorrow."' /></td>";
-                                                echo "<td align='left'>"."</td>";
+                                                //echo "<td align='left'><input type='date' min='".$tomorrow."' value=''/></td>";
+                                                //echo "<td align='left'><button type='button' class='btn btn-default'>request</button></td>";
+
+                                                echo "<td align='left'><input type='date' id='dateperform_".$rowc->eid."' name='dateperform_".$rowc->eid."' min='".$tomorrow."' /></td>";
+                                                echo "<td align='left'><input type='button' class='btn btn-s btn-info' onclick='addrequestToDb(".$rowc->eid.");' value='Add to Request'/></td>";
+
                                                 echo "</tr>";
                                             }
                                             ?> 
