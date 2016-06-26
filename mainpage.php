@@ -218,27 +218,24 @@ while($rowq = mysql_fetch_object($rsq)) {
                                 <table class="table table-striped table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Ref. No.</th>
-                                            <th>Date Requested</th>
+                                            <th>Date Perform/ed </th>
                                             <th>Lab Experiment No. & Title</th>
                                             <th>Subject</th>
                                             <th>LabCode</th>
-                                            <th>Date to Perform </th>
+                                            <th>Date Requested</th>
                                             <th align="center">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
             <?php 
 			include_once "connect.php";
-            $sql="SELECT * FROM tbl_users";
+            $sql="SELECT rid,rdate,time,expno,exptitle,roomid,dateTime,status FROM requestdetails WHERE uid=".$uid;
             $rs=mysql_query($sql); 
-            $ctr = 1;
             while($row = mysql_fetch_object($rs)) { 
 	
 						echo "<tr>";
-						echo "<td align='left'>#".$ctr++."</td>";
-						echo "<td align='left'>"."</td>";
-                        echo "<td align='left'>"."</td>";
+						echo "<td align='left'>".$row->rdate." ".$row->time."</td>";
+                        echo "<td align='left'>".$row->expno."</td>";
                         echo "<td align='left'>"."</td>";
                         echo "<td align='left'>"."</td>";
                         echo "<td align='left'>"."</td>";
